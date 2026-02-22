@@ -25,6 +25,8 @@ export interface NewsItem {
   lon?: number;
   locationName?: string;
   lang?: string;
+  // Happy variant: positive content category
+  happyCategory?: import('@/services/positive-classifier').HappyContentCategory;
 }
 
 export type VelocityLevel = 'normal' | 'elevated' | 'spike';
