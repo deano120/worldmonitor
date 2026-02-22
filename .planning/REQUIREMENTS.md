@@ -15,10 +15,10 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Visual Theme
 
-- [ ] **THEME-01**: Warm & bright CSS theme with custom color palette (warm greens, golds, soft blues), replacing dark military aesthetic
+- [x] **THEME-01**: Warm & bright CSS theme with custom color palette (warm greens, golds, soft blues), replacing dark military aesthetic
 - [ ] **THEME-02**: Warm map basemap style (green landmass, light ocean, gold accents) replacing dark military map
-- [ ] **THEME-03**: Typography and spacing adjustments for welcoming, readable feel (consider sans-serif for happy variant)
-- [ ] **THEME-04**: Positive-semantic color system replacing threat/severity colors (celebration gold, growth green, hope blue, kindness pink)
+- [x] **THEME-03**: Typography and spacing adjustments for welcoming, readable feel (consider sans-serif for happy variant)
+- [x] **THEME-04**: Positive-semantic color system replacing threat/severity colors (celebration gold, growth green, hope blue, kindness pink)
 - [ ] **THEME-05**: Happy counterparts for all existing dark-variant UI elements (panel headers, status indicators, loading states, empty states)
 - [ ] **THEME-06**: Celebration animations via canvas-confetti for milestone moments (species recovery announced, renewable energy record, etc.)
 
@@ -135,10 +135,10 @@ Which phases cover which requirements. Updated during roadmap creation.
 | INFRA-01 | Phase 1 | Complete |
 | INFRA-02 | Phase 1 | Complete |
 | INFRA-03 | Phase 1 | Complete |
-| THEME-01 | Phase 1 | Pending |
+| THEME-01 | Phase 1 | Complete |
 | THEME-02 | Phase 1 | Pending |
-| THEME-03 | Phase 1 | Pending |
-| THEME-04 | Phase 1 | Pending |
+| THEME-03 | Phase 1 | Complete |
+| THEME-04 | Phase 1 | Complete |
 | THEME-05 | Phase 1 | Pending |
 | THEME-06 | Phase 9 | Pending |
 | FEED-01 | Phase 2 | Pending |
