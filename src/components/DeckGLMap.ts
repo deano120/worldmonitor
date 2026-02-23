@@ -83,6 +83,7 @@ import {
 import { getCountryScore } from '@/services/country-instability';
 import { getAlertsNearLocation } from '@/services/geo-convergence';
 import type { PositiveGeoEvent } from '@/services/positive-events-geo';
+import type { KindnessPoint } from '@/services/kindness-data';
 import { getCountriesGeoJson, getCountryAtCoordinates } from '@/services/country-geometry';
 
 export type TimeRange = '1h' | '6h' | '24h' | '48h' | '7d' | 'all';
@@ -275,6 +276,7 @@ export class DeckGLMap {
   private displacementFlows: DisplacementFlow[] = [];
   private climateAnomalies: ClimateAnomaly[] = [];
   private positiveEvents: PositiveGeoEvent[] = [];
+  private kindnessPoints: KindnessPoint[] = [];
 
   // Country highlight state
   private countryGeoJsonLoaded = false;
@@ -1150,6 +1152,11 @@ export class DeckGLMap {
     // Positive events layer (happy variant)
     if (mapLayers.positiveEvents && this.positiveEvents.length > 0) {
       layers.push(...this.createPositiveEventsLayers());
+    }
+
+    // Kindness layer (happy variant -- green baseline pulses + real kindness events)
+    if (mapLayers.kindness && this.kindnessPoints.length > 0) {
+      layers.push(...this.createKindnessLayers());
     }
 
     // News geo-locations (always shown if data exists)
@@ -2220,7 +2227,8 @@ export class DeckGLMap {
     return this.hasRecentNews(now)
       || this.hasRecentRiot(now)
       || this.hotspots.some(h => h.hasBreaking)
-      || this.positiveEvents.some(e => e.count > 10);
+      || this.positiveEvents.some(e => e.count > 10)
+      || this.kindnessPoints.some(p => p.type === 'real');
   }
 
   private syncPulseAnimation(now = Date.now()): void {
@@ -2393,6 +2401,48 @@ export class DeckGLMap {
     return layers;
   }
 
+  private createKindnessLayers(): Layer[] {
+    const layers: Layer[] = [];
+
+    // Solid fill layer -- baseline dots are semi-transparent, real events brighter
+    layers.push(new ScatterplotLayer<KindnessPoint>({
+      id: 'kindness-layer',
+      data: this.kindnessPoints,
+      getPosition: (d: KindnessPoint) => [d.lon, d.lat],
+      getRadius: (d: KindnessPoint) => 8000 + d.intensity * 12000,
+      getFillColor: (d: KindnessPoint) =>
+        d.type === 'real'
+          ? [74, 222, 128, 200] as [number, number, number, number]
+          : [74, 222, 128, 100] as [number, number, number, number],
+      radiusMinPixels: 3,
+      radiusMaxPixels: 10,
+      pickable: true,
+    }));
+
+    // Pulse ring layer -- only real events pulse (baseline stays static)
+    const realEvents = this.kindnessPoints.filter(p => p.type === 'real');
+    if (realEvents.length > 0) {
+      const pulse = 1.0 + 0.5 * (0.5 + 0.5 * Math.sin((this.pulseTime || Date.now()) / 600));
+      layers.push(new ScatterplotLayer<KindnessPoint>({
+        id: 'kindness-pulse',
+        data: realEvents,
+        getPosition: (d: KindnessPoint) => [d.lon, d.lat],
+        getRadius: (d: KindnessPoint) => 8000 + d.intensity * 12000,
+        radiusScale: pulse,
+        radiusMinPixels: 4,
+        radiusMaxPixels: 16,
+        stroked: true,
+        filled: false,
+        getLineColor: [74, 222, 128, 80] as [number, number, number, number],
+        lineWidthMinPixels: 1,
+        pickable: false,
+        updateTriggers: { radiusScale: this.pulseTime },
+      }));
+    }
+
+    return layers;
+  }
+
   private getTooltip(info: PickingInfo): { html: string } | null {
     if (!info.object) return null;
 
@@ -2525,6 +2575,8 @@ export class DeckGLMap {
         return { html: `<div class="deckgl-tooltip"><strong>📰 ${t('components.deckgl.tooltip.news')}</strong><br/>${text(obj.title?.slice(0, 80) || '')}</div>` };
       case 'positive-events-layer':
         return { html: `<div class="deckgl-tooltip"><strong>${text(obj.name)}</strong><br/>${text(obj.category ? obj.category.replace('-', ' & ') : 'Positive Event')}${obj.count > 1 ? ` &bull; ${obj.count} reports` : ''}</div>` };
+      case 'kindness-layer':
+        return { html: `<div class="deckgl-tooltip"><strong>${text(obj.name)}</strong><br/>${text(obj.description || 'Acts of kindness nearby')}</div>` };
       case 'gulf-investments-layer': {
         const inv = obj as GulfInvestment;
         const flag = inv.investingCountry === 'SA' ? '🇸🇦' : '🇦🇪';
@@ -3449,6 +3501,12 @@ export class DeckGLMap {
 
   public setPositiveEvents(events: PositiveGeoEvent[]): void {
     this.positiveEvents = events;
+    this.syncPulseAnimation();
+    this.render();
+  }
+
+  public setKindnessData(points: KindnessPoint[]): void {
+    this.kindnessPoints = points;
     this.syncPulseAnimation();
     this.render();
   }

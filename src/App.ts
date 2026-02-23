@@ -101,6 +101,7 @@ import { PositiveNewsFeedPanel } from '@/components/PositiveNewsFeedPanel';
 import { filterBySentiment } from '@/services/sentiment-gate';
 import { fetchAllPositiveTopicIntelligence } from '@/services/gdelt-intel';
 import { fetchPositiveGeoEvents, geocodePositiveNewsItems } from '@/services/positive-events-geo';
+import { fetchKindnessData } from '@/services/kindness-data';
 import { isDesktopRuntime } from '@/services/runtime';
 import { IntelligenceServiceClient } from '@/generated/client/worldmonitor/intelligence/v1/service_client';
 import { ResearchServiceClient } from '@/generated/client/worldmonitor/research/v1/service_client';
@@ -3181,6 +3182,9 @@ export class App {
     if (SITE_VARIANT === 'happy' && this.mapLayers.positiveEvents) {
       tasks.push({ name: 'positiveEvents', task: runGuarded('positiveEvents', () => this.loadPositiveEvents()) });
     }
+    if (SITE_VARIANT === 'happy' && this.mapLayers.kindness) {
+      tasks.push({ name: 'kindness', task: runGuarded('kindness', async () => this.loadKindnessData()) });
+    }
     if (SITE_VARIANT !== 'happy' && this.mapLayers.weather) tasks.push({ name: 'weather', task: runGuarded('weather', () => this.loadWeatherAlerts()) });
     if (SITE_VARIANT !== 'happy' && this.mapLayers.ais) tasks.push({ name: 'ais', task: runGuarded('ais', () => this.loadAisSignals()) });
     if (SITE_VARIANT !== 'happy' && this.mapLayers.cables) tasks.push({ name: 'cables', task: runGuarded('cables', () => this.loadCableActivity()) });
@@ -3256,6 +3260,9 @@ export class App {
           break;
         case 'positiveEvents':
           await this.loadPositiveEvents();
+          break;
+        case 'kindness':
+          this.loadKindnessData();
           break;
       }
     } finally {
@@ -3662,6 +3669,16 @@ export class App {
     });
 
     this.map?.setPositiveEvents(merged);
+  }
+
+  private loadKindnessData(): void {
+    const kindnessItems = fetchKindnessData(
+      this.happyAllItems.map(item => ({
+        title: item.title,
+        happyCategory: item.happyCategory,
+      }))
+    );
+    this.map?.setKindnessData(kindnessItems);
   }
 
   private async loadMarkets(): Promise<void> {

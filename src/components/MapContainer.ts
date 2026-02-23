@@ -32,6 +32,7 @@ import type { Earthquake } from '@/services/earthquakes';
 import type { ClimateAnomaly } from '@/services/climate';
 import type { WeatherAlert } from '@/services/weather';
 import type { PositiveGeoEvent } from '@/services/positive-events-geo';
+import type { KindnessPoint } from '@/services/kindness-data';
 
 export type TimeRange = '1h' | '6h' | '24h' | '48h' | '7d' | 'all';
 export type MapView = 'global' | 'america' | 'mena' | 'eu' | 'asia' | 'latam' | 'africa' | 'oceania';
@@ -339,6 +340,13 @@ export class MapContainer {
       this.deckGLMap?.setPositiveEvents(events);
     }
     // SVG map does not support positive events layer
+  }
+
+  public setKindnessData(points: KindnessPoint[]): void {
+    if (this.useDeckGL) {
+      this.deckGLMap?.setKindnessData(points);
+    }
+    // SVG map does not support kindness layer
   }
 
   public updateHotspotActivity(news: NewsItem[]): void {
