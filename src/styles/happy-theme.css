@@ -480,24 +480,12 @@
    Happy Counters Panel — Ticking positive metrics grid
    ========================================================== */
 
-/* ---------- Counters grid layout (responsive 3→2→1) ---------- */
+/* ---------- Counters grid layout (auto-fit to container) ---------- */
 [data-variant='happy'] .counters-grid {
   display: grid;
-  grid-template-columns: repeat(3, 1fr);
+  grid-template-columns: repeat(auto-fill, minmax(130px, 1fr));
   gap: 12px;
   padding: 12px;
-}
-
-@media (max-width: 900px) {
-  [data-variant='happy'] .counters-grid {
-    grid-template-columns: repeat(2, 1fr);
-  }
-}
-
-@media (max-width: 500px) {
-  [data-variant='happy'] .counters-grid {
-    grid-template-columns: 1fr;
-  }
 }
 
 /* ---------- Counter card ---------- */
@@ -623,4 +611,246 @@
 
 [data-variant='happy'][data-theme='dark'] .progress-chart-tooltip {
   box-shadow: 0 2px 8px rgba(0, 0, 0, 0.3);
+}
+
+/* ==========================================================
+   Phase 6 — Breakthroughs Ticker
+   ========================================================== */
+
+@keyframes happy-ticker-scroll {
+  0%   { transform: translateX(0); }
+  100% { transform: translateX(-50%); }
+}
+
+[data-variant="happy"] .breakthroughs-ticker-wrapper {
+  overflow: hidden;
+  position: relative;
+  padding: 0.5rem 0;
+}
+
+[data-variant="happy"] .breakthroughs-ticker-track {
+  display: flex;
+  width: max-content;
+  gap: 2rem;
+  animation: happy-ticker-scroll 30s linear infinite;
+}
+
+[data-variant="happy"] .breakthroughs-ticker-wrapper:hover .breakthroughs-ticker-track {
+  animation-play-state: paused;
+}
+
+[data-variant="happy"] .ticker-item {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.5rem;
+  white-space: nowrap;
+  padding: 0.4rem 0.75rem;
+  border-radius: 6px;
+  background: var(--bg-secondary);
+  text-decoration: none;
+  color: var(--text);
+  font-size: 0.85rem;
+  transition: background 0.2s;
+}
+
+[data-variant="happy"] .ticker-item:hover {
+  background: var(--surface-hover);
+}
+
+[data-variant="happy"] .ticker-item-source {
+  color: var(--yellow);
+  font-weight: 600;
+  font-size: 0.75rem;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+[data-variant="happy"] .ticker-item-title {
+  color: var(--text);
+}
+
+/* ==========================================================
+   Phase 6 — Hero Spotlight Card
+   ========================================================== */
+
+[data-variant="happy"] .hero-card {
+  display: flex;
+  flex-direction: column;
+  gap: 0;
+  border-radius: var(--panel-radius, 14px);
+  overflow: hidden;
+  background: var(--bg-secondary);
+}
+
+[data-variant="happy"] .hero-card-image {
+  width: 100%;
+  max-height: 200px;
+  overflow: hidden;
+}
+
+[data-variant="happy"] .hero-card-image img {
+  width: 100%;
+  height: 200px;
+  object-fit: cover;
+  display: block;
+}
+
+[data-variant="happy"] .hero-card-body {
+  padding: 1rem;
+  display: flex;
+  flex-direction: column;
+  gap: 0.5rem;
+}
+
+[data-variant="happy"] .hero-card-source {
+  font-size: 0.75rem;
+  font-weight: 600;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+  color: var(--yellow);
+}
+
+[data-variant="happy"] .hero-card-title {
+  font-size: 1.1rem;
+  font-weight: 700;
+  line-height: 1.3;
+  margin: 0;
+}
+
+[data-variant="happy"] .hero-card-title a {
+  color: var(--text);
+  text-decoration: none;
+}
+
+[data-variant="happy"] .hero-card-title a:hover {
+  text-decoration: underline;
+}
+
+[data-variant="happy"] .hero-card-time {
+  font-size: 0.8rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+}
+
+[data-variant="happy"] .hero-card-location-btn {
+  display: inline-flex;
+  align-items: center;
+  gap: 0.4rem;
+  padding: 0.4rem 0.75rem;
+  border: 1px solid var(--green);
+  border-radius: 6px;
+  background: transparent;
+  color: var(--green);
+  font-size: 0.8rem;
+  cursor: pointer;
+  transition: background 0.2s, color 0.2s;
+  align-self: flex-start;
+}
+
+[data-variant="happy"] .hero-card-location-btn:hover {
+  background: var(--green);
+  color: var(--bg);
+}
+
+/* ==========================================================
+   Phase 6 — Good Things Digest
+   ========================================================== */
+
+[data-variant="happy"] .digest-list {
+  display: flex;
+  flex-direction: column;
+  gap: 0.75rem;
+}
+
+[data-variant="happy"] .digest-card {
+  display: flex;
+  gap: 0.75rem;
+  align-items: flex-start;
+  padding: 0.75rem;
+  border-radius: 8px;
+  background: var(--bg-secondary);
+  transition: background 0.2s;
+}
+
+[data-variant="happy"] .digest-card:hover {
+  background: var(--surface-hover);
+}
+
+[data-variant="happy"] .digest-card-number {
+  flex-shrink: 0;
+  width: 1.8rem;
+  height: 1.8rem;
+  display: flex;
+  align-items: center;
+  justify-content: center;
+  border-radius: 50%;
+  background: var(--green);
+  color: #fff;
+  font-weight: 700;
+  font-size: 0.85rem;
+}
+
+[data-variant="happy"] .digest-card-body {
+  flex: 1;
+  min-width: 0;
+  display: flex;
+  flex-direction: column;
+  gap: 0.25rem;
+}
+
+[data-variant="happy"] .digest-card-title {
+  font-size: 0.9rem;
+  font-weight: 600;
+  color: var(--text);
+  text-decoration: none;
+  line-height: 1.3;
+}
+
+[data-variant="happy"] .digest-card-title:hover {
+  text-decoration: underline;
+}
+
+[data-variant="happy"] .digest-card-source {
+  font-size: 0.7rem;
+  color: var(--text-muted);
+  opacity: 0.7;
+  text-transform: uppercase;
+  letter-spacing: 0.03em;
+}
+
+[data-variant="happy"] .digest-card-summary {
+  font-size: 0.85rem;
+  color: var(--text);
+  opacity: 0.85;
+  line-height: 1.4;
+  margin: 0.25rem 0 0;
+}
+
+[data-variant="happy"] .digest-card-summary--loading {
+  opacity: 0.5;
+  font-style: italic;
+}
+
+/* ==========================================================
+   Phase 6 — Dark Mode Overrides
+   ========================================================== */
+
+[data-variant="happy"][data-theme="dark"] .ticker-item {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-variant="happy"][data-theme="dark"] .ticker-item:hover {
+  background: rgba(255, 255, 255, 0.12);
+}
+
+[data-variant="happy"][data-theme="dark"] .hero-card {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-variant="happy"][data-theme="dark"] .digest-card {
+  background: rgba(255, 255, 255, 0.06);
+}
+
+[data-variant="happy"][data-theme="dark"] .digest-card:hover {
+  background: rgba(255, 255, 255, 0.12);
 }
