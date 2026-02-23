@@ -148,10 +148,11 @@ Plans:
   1. The renewable energy panel visualizes solar and wind installed capacity (MW) growing over time using EIA operating-generator-capacity data
   2. The panel shows coal plant retirements/closures as a declining trend using EIA coal capacity data (BIT/SUB/LIG/RC energy source codes)
   3. Both EIA and World Bank (IEA-sourced) data are used together — the existing gauge shows renewable %, the new visualization shows installation growth and coal decline
-**Plans**: TBD
+**Plans**: 2 plans
 
 Plans:
-- [ ] 71-01-PLAN.md -- TBD
+- [ ] 71-01-PLAN.md -- Proto + server handler + client service for EIA GetEnergyCapacity RPC (ENERGY-01, ENERGY-03)
+- [ ] 71-02-PLAN.md -- D3 stacked area chart in RenewableEnergyPanel + App.ts wiring (ENERGY-01, ENERGY-03)
 
 ### Phase 8: Map Data Overlays
 **Goal**: The map gains choropleth and overlay layers for world happiness, species recovery zones, and renewable energy installations
@@ -200,6 +201,6 @@ Note: Phases 4, 5, 6, 7 can partially parallelize after Phase 2 completes (they 
 | 5. Humanity Data Panels | 0/3 | Complete    | 2026-02-23 |
 | 6. Content Spotlight Panels | 0/3 | Complete    | 2026-02-23 |
 | 7. Conservation & Energy Trackers | 3/3 | Complete | 2026-02-23 |
-| 7.1 Renewable Energy Installation & Coal Data | 0/1 | Not started | - |
+| 7.1 Renewable Energy Installation & Coal Data | 0/2 | Not started | - |
 | 8. Map Data Overlays | 2/2 | Complete    | 2026-02-23 |
 | 9. Sharing, TV Mode & Polish | 0/3 | Not started | - |
