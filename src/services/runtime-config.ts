@@ -2,8 +2,7 @@ import { isDesktopRuntime } from './runtime';
 import { invokeTauri } from './tauri-bridge';
 
 export type RuntimeSecretKey =
-  | 'GROQ_API_KEY'
-  | 'OPENROUTER_API_KEY'
+  | 'OPENAI_API_KEY'
   | 'FRED_API_KEY'
   | 'EIA_API_KEY'
   | 'CLOUDFLARE_API_TOKEN'
@@ -25,8 +24,7 @@ export type RuntimeSecretKey =
   | 'WORLDMONITOR_API_KEY';
 
 export type RuntimeFeatureId =
-  | 'aiGroq'
-  | 'aiOpenRouter'
+  | 'aiOpenAI'
   | 'economicFred'
   | 'energyEia'
   | 'internetOutages'
@@ -39,7 +37,8 @@ export type RuntimeFeatureId =
   | 'openskyRelay'
   | 'finnhubMarkets'
   | 'nasaFirms'
-  | 'aiOllama';
+  | 'aiOllama'
+  | 'pizzint';
 
 export interface RuntimeFeatureDefinition {
   id: RuntimeFeatureId;
@@ -65,10 +64,9 @@ const SIDECAR_ENV_UPDATE_URL = 'http://127.0.0.1:46123/api/local-env-update';
 const SIDECAR_SECRET_VALIDATE_URL = 'http://127.0.0.1:46123/api/local-validate-secret';
 
 const defaultToggles: Record<RuntimeFeatureId, boolean> = {
-  aiGroq: true,
-  aiOpenRouter: true,
-  economicFred: true,
-  energyEia: true,
+  aiOpenAI: true,
+  economicFred: false,   // US Federal Reserve data — not relevant for UK analysts
+  energyEia: false,      // US Energy Information Administration — not relevant for UK analysts
   internetOutages: true,
   acledConflicts: true,
   abuseChThreatIntel: true,
@@ -80,6 +78,7 @@ const defaultToggles: Record<RuntimeFeatureId, boolean> = {
   finnhubMarkets: true,
   nasaFirms: true,
   aiOllama: true,
+  pizzint: false,        // Foot-traffic / location popularity tracker — not analyst-relevant
 };
 
 export const RUNTIME_FEATURES: RuntimeFeatureDefinition[] = [
@@ -91,18 +90,11 @@ export const RUNTIME_FEATURES: RuntimeFeatureDefinition[] = [
     fallback: 'Falls back to Groq, then OpenRouter, then local browser model.',
   },
   {
-    id: 'aiGroq',
-    name: 'Groq summarization',
-    description: 'Primary fast LLM provider used for AI summary generation.',
-    requiredSecrets: ['GROQ_API_KEY'],
-    fallback: 'Falls back to OpenRouter, then local browser model.',
-  },
-  {
-    id: 'aiOpenRouter',
-    name: 'OpenRouter summarization',
-    description: 'Secondary LLM provider for AI summary fallback.',
-    requiredSecrets: ['OPENROUTER_API_KEY'],
-    fallback: 'Falls back to local browser model only.',
+    id: 'aiOpenAI',
+    name: 'OpenAI summarization',
+    description: 'Primary LLM provider used for AI summary generation.',
+    requiredSecrets: ['OPENAI_API_KEY'],
+    fallback: 'Falls back to local browser model.',
   },
   {
     id: 'economicFred',
@@ -189,6 +181,13 @@ export const RUNTIME_FEATURES: RuntimeFeatureDefinition[] = [
     description: 'Fire Information for Resource Management System satellite data.',
     requiredSecrets: ['NASA_FIRMS_API_KEY'],
     fallback: 'FIRMS fire layer uses public VIIRS feed.',
+  },
+  {
+    id: 'pizzint',
+    name: 'PizzINT activity monitor',
+    description: 'Location popularity spike detection (foot-traffic anomalies). Disabled by default — enable for HUMINT pattern-of-life analysis.',
+    requiredSecrets: [],
+    fallback: 'DEFCON indicator is hidden.',
   },
 ];
 

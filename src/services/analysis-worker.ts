@@ -41,7 +41,7 @@ class AnalysisWorkerManager {
   private readyReject: ((error: Error) => void) | null = null;
   private readyTimeout: ReturnType<typeof setTimeout> | null = null;
 
-  private static readonly READY_TIMEOUT_MS = 10000; // 10 seconds to become ready
+  private static readonly READY_TIMEOUT_MS = 30000; // 30 seconds to become ready
 
   /**
    * Initialize the worker. Called lazily on first use.

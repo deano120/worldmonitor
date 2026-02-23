@@ -36,7 +36,7 @@ import { buildMapUrl, debounce, loadFromStorage, parseMapUrlState, saveToStorage
 import { reverseGeocode } from '@/utils/reverse-geocode';
 import { CountryBriefPage } from '@/components/CountryBriefPage';
 import { maybeShowDownloadBanner } from '@/components/DownloadBanner';
-import { mountCommunityWidget } from '@/components/CommunityWidget';
+
 import { CountryTimeline, type TimelineEvent } from '@/components/CountryTimeline';
 import { escapeHtml } from '@/utils/sanitize';
 import type { ParsedMapUrlState } from '@/utils';
@@ -693,6 +693,8 @@ export class App {
   private setupPizzIntIndicator(): void {
     // Skip DEFCON indicator for tech/startup and finance variants
     if (SITE_VARIANT === 'tech' || SITE_VARIANT === 'finance') return;
+    // Disabled by default via feature toggle — analysts can re-enable in Settings
+    if (!isFeatureAvailable('pizzint')) return;
 
     this.pizzintIndicator = new PizzIntIndicator();
     const headerLeft = this.container.querySelector('.header-left');
@@ -1023,7 +1025,7 @@ export class App {
           if (lines.length > 0) {
             this.countryBriefPage!.updateBrief({ brief: lines.join('\n'), country, code, fallback: true });
           } else {
-            this.countryBriefPage!.updateBrief({ brief: '', country, code, error: 'No AI service available. Configure GROQ_API_KEY in Settings for full briefs.' });
+            this.countryBriefPage!.updateBrief({ brief: '', country, code, error: 'No AI service available. Configure OPENAI_API_KEY in Settings for full briefs.' });
           }
         }
       }
@@ -3482,7 +3484,7 @@ export class App {
     this.allNews = collectedNews;
     this.initialLoadComplete = true;
     maybeShowDownloadBanner();
-    mountCommunityWidget();
+
     // Temporal baseline: report news volume
     updateAndCheck([
       { type: 'news', region: 'global', count: collectedNews.length },

@@ -69,6 +69,9 @@ const ALLOWED_DOMAINS = [
   'news.usni.org',
   'www.oryxspioenkop.com',
   'www.gov.uk',
+  'www.ncsc.gov.uk',
+  'www.mi5.gov.uk',
+  'feeds.skynews.com',
   'www.foreignaffairs.com',
   'www.atlanticcouncil.org',
   // Tech variant domains
@@ -161,13 +164,19 @@ const ALLOWED_DOMAINS = [
   'www.who.int',
   'www.cisa.gov',
   'www.crisisgroup.org',
+  // UK media (Wilson James UK customisation)
+  'www.independent.co.uk',
+  'www.cityam.com',
+  'www.standard.co.uk',
+  'www.politico.eu',
+  'euobserver.com',
+  // UK security think tanks
+  'www.iiss.org',
+  'crestresearch.ac.uk',
+  'www.henryjacksonsociety.org',
   // Think Tanks & Research (Added 2026-01-29)
   'rusi.org',
-  'warontherocks.com',
-  'www.aei.org',
   'responsiblestatecraft.org',
-  'www.fpri.org',
-  'jamestown.org',
   'www.chathamhouse.org',
   'ecfr.eu',
   'www.gmfus.org',

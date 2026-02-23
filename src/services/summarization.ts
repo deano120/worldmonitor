@@ -15,7 +15,7 @@ import { trackLLMUsage, trackLLMFailure } from './analytics';
 import { NewsServiceClient, type SummarizeArticleResponse } from '@/generated/client/worldmonitor/news/v1/service_client';
 import { createCircuitBreaker } from '@/utils';
 
-export type SummarizationProvider = 'ollama' | 'groq' | 'openrouter' | 'browser' | 'cache';
+export type SummarizationProvider = 'ollama' | 'openai' | 'browser' | 'cache';
 
 export interface SummarizationResult {
   summary: string;
@@ -43,8 +43,7 @@ interface ApiProviderDef {
 
 const API_PROVIDERS: ApiProviderDef[] = [
   { featureId: 'aiOllama',      provider: 'ollama',     label: 'Ollama' },
-  { featureId: 'aiGroq',        provider: 'groq',       label: 'Groq AI' },
-  { featureId: 'aiOpenRouter',  provider: 'openrouter', label: 'OpenRouter' },
+  { featureId: 'aiOpenAI',      provider: 'openai',       label: 'OpenAI' },
 ];
 
 let lastAttemptedProvider = 'none';
@@ -188,9 +187,9 @@ async function generateSummaryInternal(
       const browserResult = await tryBrowserT5(headlines, 'summarization-beta');
       if (browserResult) {
         console.log('[BETA] Browser T5-small:', browserResult.summary);
-        const groqProvider = API_PROVIDERS.find(p => p.provider === 'groq');
-        if (groqProvider) tryApiProvider(groqProvider, headlines, geoContext).then(r => {
-          if (r) console.log('[BETA] Groq comparison:', r.summary);
+        const openaiProvider = API_PROVIDERS.find(p => p.provider === 'openai');
+        if (openaiProvider) tryApiProvider(openaiProvider, headlines, geoContext).then(r => {
+          if (r) console.log('[BETA] OpenAI comparison:', r.summary);
         }).catch(() => {});
 
         return browserResult;
@@ -209,7 +208,7 @@ async function generateSummaryInternal(
       // API providers while model loads
       const chainResult = await runApiChain(API_PROVIDERS, headlines, geoContext, undefined, onProgress, 1, totalSteps);
       if (chainResult) {
-        if (chainResult.provider === 'groq') console.log('[BETA] Groq:', chainResult.summary);
+        if (chainResult.provider === 'openai') console.log('[BETA] OpenAI:', chainResult.summary);
         return chainResult;
       }
 

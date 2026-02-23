@@ -15,44 +15,48 @@ export * from '../military';
 export * from '../airports';
 export * from '../entities';
 
-// Panel configuration for geopolitical analysis
+// Panel configuration — Wilson James UK analyst defaults
 export const DEFAULT_PANELS: Record<string, PanelConfig> = {
-  map: { name: 'Global Map', enabled: true, priority: 1 },
-  'live-news': { name: 'Live News', enabled: true, priority: 1 },
-  intel: { name: 'Intel Feed', enabled: true, priority: 1 },
-  'gdelt-intel': { name: 'Live Intelligence', enabled: true, priority: 1 },
-  cii: { name: 'Country Instability', enabled: true, priority: 1 },
-  cascade: { name: 'Infrastructure Cascade', enabled: true, priority: 1 },
-  'strategic-risk': { name: 'Strategic Risk Overview', enabled: true, priority: 1 },
-  politics: { name: 'World News', enabled: true, priority: 1 },
-  middleeast: { name: 'Middle East', enabled: true, priority: 1 },
-  africa: { name: 'Africa', enabled: true, priority: 1 },
-  latam: { name: 'Latin America', enabled: true, priority: 1 },
-  asia: { name: 'Asia-Pacific', enabled: true, priority: 1 },
-  energy: { name: 'Energy & Resources', enabled: true, priority: 1 },
-  gov: { name: 'Government', enabled: true, priority: 1 },
-  thinktanks: { name: 'Think Tanks', enabled: true, priority: 1 },
-  polymarket: { name: 'Predictions', enabled: true, priority: 1 },
-  commodities: { name: 'Commodities', enabled: true, priority: 1 },
-  markets: { name: 'Markets', enabled: true, priority: 1 },
-  economic: { name: 'Economic Indicators', enabled: true, priority: 1 },
-  finance: { name: 'Financial', enabled: true, priority: 1 },
-  tech: { name: 'Technology', enabled: true, priority: 2 },
-  crypto: { name: 'Crypto', enabled: true, priority: 2 },
-  heatmap: { name: 'Sector Heatmap', enabled: true, priority: 2 },
-  ai: { name: 'AI/ML', enabled: true, priority: 2 },
-  layoffs: { name: 'Layoffs Tracker', enabled: false, priority: 2 },
-  'macro-signals': { name: 'Market Radar', enabled: true, priority: 2 },
-  'etf-flows': { name: 'BTC ETF Tracker', enabled: true, priority: 2 },
-  stablecoins: { name: 'Stablecoins', enabled: true, priority: 2 },
-  monitors: { name: 'My Monitors', enabled: true, priority: 2 },
+  // Core intelligence — always on
+  map:              { name: 'Global Map',             enabled: true,  priority: 1 },
+  'live-news':      { name: 'Live News',              enabled: true,  priority: 1 },
+  intel:            { name: 'Intel Feed',             enabled: true,  priority: 1 },
+  'gdelt-intel':    { name: 'Live Intelligence',      enabled: true,  priority: 1 },
+  cii:              { name: 'Country Instability',    enabled: true,  priority: 1 },
+  cascade:          { name: 'Infrastructure Cascade', enabled: true,  priority: 1 },
+  'strategic-risk': { name: 'Strategic Risk Overview',enabled: true,  priority: 1 },
+  // News & gov — UK/EU focus
+  politics:         { name: 'World News',             enabled: true,  priority: 1 },
+  gov:              { name: 'Government',             enabled: true,  priority: 1 },
+  thinktanks:       { name: 'Think Tanks',            enabled: true,  priority: 1 },
+  middleeast:       { name: 'Middle East',            enabled: true,  priority: 1 },
+  africa:           { name: 'Africa',                 enabled: true,  priority: 1 },
+  asia:             { name: 'Asia-Pacific',           enabled: true,  priority: 1 },
+  energy:           { name: 'Energy & Resources',     enabled: true,  priority: 1 },
+  markets:          { name: 'Markets',                enabled: true,  priority: 1 },
+  polymarket:       { name: 'Predictions',            enabled: true,  priority: 1 },
+  commodities:      { name: 'Commodities',            enabled: true,  priority: 1 },
+  monitors:         { name: 'My Monitors',            enabled: true,  priority: 1 },
+  // Deprioritised — available via panel menu
+  latam:            { name: 'Latin America',          enabled: false, priority: 2 },
+  tech:             { name: 'Technology',             enabled: false, priority: 2 },
+  'macro-signals':  { name: 'Market Radar',           enabled: false, priority: 2 },
+  // Disabled — US-only data sources or not relevant for security analysts
+  economic:         { name: 'Economic Indicators',    enabled: false, priority: 2 }, // FRED+EIA+USASpending are US-only
+  finance:          { name: 'Financial',              enabled: false, priority: 2 },
+  crypto:           { name: 'Crypto',                 enabled: false, priority: 2 },
+  'etf-flows':      { name: 'BTC ETF Tracker',        enabled: false, priority: 2 },
+  stablecoins:      { name: 'Stablecoins',            enabled: false, priority: 2 },
+  heatmap:          { name: 'Sector Heatmap',         enabled: false, priority: 2 },
+  ai:               { name: 'AI/ML',                  enabled: false, priority: 2 },
+  layoffs:          { name: 'Layoffs Tracker',        enabled: false, priority: 2 },
 };
 
 // Map layers for geopolitical view
 export const DEFAULT_MAP_LAYERS: MapLayers = {
   conflicts: true,
   bases: true,
-  cables: false,
+  cables: true,         // CNI — undersea cables relevant for WJ clients
   pipelines: false,
   hotspots: true,
   ais: false,
@@ -63,9 +67,9 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   economic: true,
   waterways: true,
   outages: true,
-  cyberThreats: false,
+  cyberThreats: true,   // cyber/physical crossover — key WJ threat
   datacenters: false,
-  protests: false,
+  protests: true,       // civil unrest monitoring — key WJ threat
   flights: false,
   military: false,
   natural: true,

@@ -177,6 +177,7 @@ export async function getTheaterPosture(
   if (cached) return cached;
 
   try {
+    console.log('[getTheaterPosture] Fetching from OpenSky and Wingbits...');
     // Race both sources in parallel instead of sequential fallback (H-6 fix)
     let flights: RawFlight[];
     const [openskyResult, wingbitsResult] = await Promise.allSettled([
@@ -185,10 +186,14 @@ export async function getTheaterPosture(
     ]);
 
     if (openskyResult.status === 'fulfilled' && openskyResult.value.length > 0) {
+      console.log('--- OPENSKY SUCCESS ---');
       flights = openskyResult.value;
     } else if (wingbitsResult.status === 'fulfilled' && wingbitsResult.value && wingbitsResult.value.length > 0) {
+      console.log('--- WINGBITS SUCCESS ---');
       flights = wingbitsResult.value;
     } else {
+      console.log('--- OPENSKY FAILED: ' + (openskyResult.status === 'rejected' ? openskyResult.reason : 'empty') + ' ---');
+      console.log('--- WINGBITS FAILED: ' + (wingbitsResult.status === 'rejected' ? wingbitsResult.reason : 'empty') + ' ---');
       throw new Error('Both OpenSky and Wingbits unavailable');
     }
 
@@ -201,11 +206,26 @@ export async function getTheaterPosture(
       setCachedJson(BACKUP_CACHE_KEY, result, BACKUP_TTL),
     ]);
     return result;
-  } catch {
+  } catch (error) {
+    console.warn('[getTheaterPosture] Falling back to stale cache due to error:', error);
     const stale = (await getCachedJson(STALE_CACHE_KEY)) as GetTheaterPostureResponse | null;
     if (stale) return stale;
+    
+    console.warn('[getTheaterPosture] Stale cache missed. Falling back to backup cache.');
     const backup = (await getCachedJson(BACKUP_CACHE_KEY)) as GetTheaterPostureResponse | null;
     if (backup) return backup;
-    return { theaters: [] };
+    
+    console.error('[getTheaterPosture] All caches missed. Returning empty baseline posture.');
+    
+    const fallbackTheaters = POSTURE_THEATERS.map((theater) => ({
+      theater: theater.id,
+      postureLevel: 'normal' as const,
+      activeFlights: 0,
+      trackedVessels: 0,
+      activeOperations: [],
+      assessedAt: Date.now(),
+    }));
+
+    return { theaters: fallbackTheaters };
   }
 }

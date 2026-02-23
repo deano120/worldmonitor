@@ -477,6 +477,54 @@ function youtubeLivePlugin(): Plugin {
   };
 }
 
+function rssProxyPlugin(): Plugin {
+  return {
+    name: 'rss-proxy-dev',
+    configureServer(server) {
+      server.middlewares.use(async (req, res, next) => {
+        if (!req.url?.startsWith('/api/rss-proxy')) return next();
+        const urlObj = new URL(req.url, 'http://localhost');
+        const feedUrl = urlObj.searchParams.get('url');
+
+        if (!feedUrl) {
+          res.statusCode = 400;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Missing url parameter' }));
+          return;
+        }
+
+        try {
+          const controller = new AbortController();
+          const timer = setTimeout(() => controller.abort(), 10000);
+          
+          const response = await fetch(feedUrl, {
+            headers: {
+              'User-Agent': 'Mozilla/5.0 (Windows NT 10.0; Win64; x64) AppleWebKit/537.36 (KHTML, like Gecko) Chrome/120.0.0.0 Safari/537.36',
+              'Accept': 'application/rss+xml, application/xml, text/xml, */*',
+              'Accept-Language': 'en-US,en;q=0.9',
+            },
+            redirect: 'follow',
+            signal: controller.signal
+          });
+          
+          clearTimeout(timer);
+          
+          const data = await response.text();
+          res.statusCode = response.status;
+          res.setHeader('Content-Type', 'application/xml');
+          res.setHeader('Cache-Control', 'public, max-age=60');
+          res.end(data);
+        } catch (error) {
+          console.error(`[Local RSS Proxy] Error fetching ${feedUrl}:`, error);
+          res.statusCode = 502;
+          res.setHeader('Content-Type', 'application/json');
+          res.end(JSON.stringify({ error: 'Failed to fetch feed locally' }));
+        }
+      });
+    },
+  };
+}
+
 export default defineConfig({
   define: {
     __APP_VERSION__: JSON.stringify(pkg.version),
@@ -485,6 +533,7 @@ export default defineConfig({
     htmlVariantPlugin(),
     polymarketPlugin(),
     youtubeLivePlugin(),
+    rssProxyPlugin(),
     sebufApiPlugin(),
     brotliPrecompressPlugin(),
     VitePWA({
