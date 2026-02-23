@@ -115,12 +115,12 @@ Plans:
   2. A daily "Today's Best Human" card shows a featured hero/inventor/rescuer story with photo, excerpt, and their location marked on the map
   3. Hero stories are curated from GNN Heroes feed and editorial picks, updating daily
   4. A "5 Good Things" digest panel shows the top 5 positive stories of the day, each summarized in 50 words or less via Flan-T5 AI summarization
-**Plans**: TBD
+**Plans**: 3 plans
 
 Plans:
-- [ ] 06-01: TBD
-- [ ] 06-02: TBD
-- [ ] 06-03: TBD
+- [ ] 06-01-PLAN.md -- Science RSS feeds, BreakthroughsTickerPanel, HeroSpotlightPanel (SCI-01, SCI-02, HERO-01, HERO-02, HERO-03)
+- [ ] 06-02-PLAN.md -- GoodThingsDigestPanel with progressive AI summarization (DIGEST-01, DIGEST-02)
+- [ ] 06-03-PLAN.md -- App.ts panel wiring, happy.ts config, and happy-theme.css styling (all requirements)
 
 ### Phase 7: Conservation & Energy Trackers
 **Goal**: Users can explore wildlife conservation wins and watch renewable energy capacity grow in dedicated tracker panels
