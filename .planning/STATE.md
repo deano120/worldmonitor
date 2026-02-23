@@ -5,23 +5,23 @@
 See: .planning/PROJECT.md (updated 2026-02-22)
 
 **Core value:** Every piece of content on the dashboard makes the viewer feel genuinely better about humanity
-**Current focus:** Phase 7.1 - Renewable Energy Installation & Coal Retirement Data (1/2 plans done)
+**Current focus:** Phase 7.1 - Renewable Energy Installation & Coal Retirement Data (2/2 plans done -- COMPLETE)
 
 ## Current Position
 
 Phase: 7.1 (Renewable Energy Installation & Coal Retirement)
-Plan: 1 of 2 in current phase (71-01 complete)
-Status: In Progress
-Last activity: 2026-02-23 -- Completed 71-01-PLAN.md (EIA Energy Capacity Data Pipeline)
+Plan: 2 of 2 in current phase (71-02 complete -- PHASE COMPLETE)
+Status: Complete
+Last activity: 2026-02-23 -- Completed 71-02-PLAN.md (EIA Capacity Visualization)
 
-Progress: [##########] 97%
+Progress: [##########] 100%
 
 ## Performance Metrics
 
 **Velocity:**
-- Total plans completed: 23
-- Average duration: 10 min
-- Total execution time: 3.45 hours
+- Total plans completed: 24
+- Average duration: 9 min
+- Total execution time: 3.48 hours
 
 **By Phase:**
 
@@ -36,11 +36,11 @@ Progress: [##########] 97%
 | 07 | 3 | 8 min | 2.7 min |
 
 | 08 | 2 | 18 min | 9 min |
-| 7.1 | 1 | 3 min | 3 min |
+| 7.1 | 2 | 5 min | 2.5 min |
 
 **Recent Trend:**
-- Last 5 plans: 3m, 3m, 6m, 12m, 3m
-- Trend: Phase 7.1 plan 01 done (EIA capacity data pipeline)
+- Last 5 plans: 3m, 6m, 12m, 3m, 2m
+- Trend: Phase 7.1 complete (EIA capacity pipeline + visualization)
 
 *Updated after each plan completion*
 | Phase 04 P01 | 4 | 2 tasks | 9 files |
@@ -58,6 +58,7 @@ Progress: [##########] 97%
 | Phase 08 P01 | 6 | 2 tasks | 15 files |
 | Phase 08 P02 | 12 | 2 tasks | 3 files |
 | Phase 7.1 P01 | 3 | 2 tasks | 10 files |
+| Phase 7.1 P02 | 2 | 2 tasks | 3 files |
 
 ## Accumulated Context
 
@@ -140,6 +141,9 @@ Recent decisions affecting current work:
 - [71-01]: Coal sub-type fallback: try COL first, if empty fetch BIT/SUB/LIG/RC and sum by year -- handles EIA endpoint variability.
 - [71-01]: 24h Redis TTL for capacity data since it is annual and changes infrequently.
 - [71-01]: fetchEnergyCapacity requests 25 years of data for comprehensive trend visualization.
+- [71-02]: setCapacityData appends to existing content instead of replacing, allowing gauge and capacity chart to coexist.
+- [71-02]: Coal rendered as area+line overlay on same y-axis for direct scale comparison with renewables.
+- [71-02]: EIA capacity fetch wrapped in separate try/catch so World Bank gauge always renders even if EIA fails.
 
 ### Pending Todos
 
@@ -154,5 +158,5 @@ Recent decisions affecting current work:
 ## Session Continuity
 
 Last session: 2026-02-23
-Stopped at: Completed 71-01-PLAN.md (EIA Energy Capacity Data Pipeline) -- Phase 7.1 (1/2)
-Resume file: .planning/phases/71-renewable-installation-coal-retirement/71-01-SUMMARY.md
+Stopped at: Completed 71-02-PLAN.md (EIA Capacity Visualization) -- Phase 7.1 COMPLETE (2/2)
+Resume file: .planning/phases/71-renewable-installation-coal-retirement/71-02-SUMMARY.md
