@@ -32,8 +32,8 @@ Requirements for initial release. Each maps to roadmap phases.
 
 ### Positive News Feed Panel
 
-- [ ] **NEWS-01**: Scrolling real-time positive news feed panel showing curated uplifting stories with title, source, image, and category
-- [ ] **NEWS-02**: Category filtering within the news feed (user can filter by Science, Nature, Humanity, etc.)
+- [x] **NEWS-01**: Scrolling real-time positive news feed panel showing curated uplifting stories with title, source, image, and category
+- [x] **NEWS-02**: Category filtering within the news feed (user can filter by Science, Nature, Humanity, etc.)
 - [ ] **NEWS-03**: Auto-refresh on configurable interval (same real-time feel as WorldMonitor)
 
 ### Global Map & Positive Events
@@ -146,8 +146,8 @@ Which phases cover which requirements. Updated during roadmap creation.
 | FEED-03 | Phase 2 | Complete |
 | FEED-04 | Phase 2 | Complete |
 | FEED-05 | Phase 3 | Pending |
-| NEWS-01 | Phase 3 | Pending |
-| NEWS-02 | Phase 3 | Pending |
+| NEWS-01 | Phase 3 | Complete |
+| NEWS-02 | Phase 3 | Complete |
 | NEWS-03 | Phase 3 | Pending |
 | MAP-01 | Phase 4 | Pending |
 | MAP-02 | Phase 4 | Pending |
