@@ -147,11 +147,13 @@ export async function deletePersistentCache(key: string): Promise<void> {
         tx.objectStore(CACHE_STORE).delete(key);
       });
       return;
-    } catch {
+    } catch (error) {
+      console.warn('[persistent-cache] IndexedDB delete failed; falling back to localStorage', error);
       cacheDbPromise = null;
     }
   }
 
+  if (isStorageQuotaExceeded()) return;
   try {
     localStorage.removeItem(`${CACHE_PREFIX}${key}`);
   } catch {

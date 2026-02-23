@@ -315,8 +315,7 @@ fn read_cache_entry(cache: tauri::State<'_, PersistentCache>, key: String) -> Re
 }
 
 #[tauri::command]
-fn delete_cache_entry(app: AppHandle, cache: tauri::State<'_, PersistentCache>, key: String) -> Result<(), String> {
-    let _write_guard = cache.write_lock.lock().unwrap_or_else(|e| e.into_inner());
+fn delete_cache_entry(cache: tauri::State<'_, PersistentCache>, key: String) -> Result<(), String> {
     {
         let mut data = cache.data.lock().unwrap_or_else(|e| e.into_inner());
         data.remove(&key);
@@ -325,18 +324,7 @@ fn delete_cache_entry(app: AppHandle, cache: tauri::State<'_, PersistentCache>, 
         let mut dirty = cache.dirty.lock().unwrap_or_else(|e| e.into_inner());
         *dirty = true;
     }
-
-    let path = cache_file_path(&app)?;
-    let data = cache.data.lock().unwrap_or_else(|e| e.into_inner());
-    let serialized = serde_json::to_string(&Value::Object(data.clone()))
-        .map_err(|e| format!("Failed to serialize cache: {e}"))?;
-    drop(data);
-    std::fs::write(&path, &serialized)
-        .map_err(|e| format!("Failed to write cache {}: {e}", path.display()))?;
-    {
-        let mut dirty = cache.dirty.lock().unwrap_or_else(|e| e.into_inner());
-        *dirty = false;
-    }
+    // Disk flush deferred to exit handler (cache.flush) — avoids blocking main thread
     Ok(())
 }
 

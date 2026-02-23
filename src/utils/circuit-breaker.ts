@@ -83,10 +83,15 @@ export class CircuitBreaker<T> {
         // Only hydrate if in-memory cache is empty (don't overwrite live data)
         if (this.cache === null) {
           this.cache = { data: entry.data, timestamp: entry.updatedAt };
-          this.lastDataState = { mode: 'cached', timestamp: entry.updatedAt, offline: false };
+          const withinTtl = (Date.now() - entry.updatedAt) < this.cacheTtlMs;
+          this.lastDataState = {
+            mode: withinTtl ? 'cached' : 'unavailable',
+            timestamp: entry.updatedAt,
+            offline: false,
+          };
         }
-      } catch {
-        // Persistent cache unavailable — degrade silently to network-only
+      } catch (err) {
+        console.warn(`[${this.name}] Persistent cache hydration failed:`, err);
       } finally {
         this.persistentLoaded = true;
         this.persistentLoadPromise = null;
@@ -163,6 +168,7 @@ export class CircuitBreaker<T> {
 
   clearCache(): void {
     this.cache = null;
+    this.persistentLoadPromise = null; // orphan any in-flight hydration
     if (this.persistEnabled) {
       this.deletePersistentCache();
     }
