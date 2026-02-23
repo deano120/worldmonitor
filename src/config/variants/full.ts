@@ -87,6 +87,9 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   centralBanks: false,
   commodityHubs: false,
   gulfInvestments: false,
+  // Happy variant layers
+  positiveEvents: false,
+  kindness: false,
 };
 
 // Mobile-specific defaults for geopolitical
@@ -128,6 +131,9 @@ export const MOBILE_DEFAULT_MAP_LAYERS: MapLayers = {
   centralBanks: false,
   commodityHubs: false,
   gulfInvestments: false,
+  // Happy variant layers
+  positiveEvents: false,
+  kindness: false,
 };
 
 export const VARIANT_CONFIG: VariantConfig = {

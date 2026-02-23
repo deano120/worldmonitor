@@ -209,6 +209,9 @@ export const DEFAULT_MAP_LAYERS: MapLayers = {
   centralBanks: true,
   commodityHubs: false,
   gulfInvestments: false,
+  // Happy variant layers
+  positiveEvents: false,
+  kindness: false,
 };
 
 // Mobile defaults for finance variant
@@ -250,6 +253,9 @@ export const MOBILE_DEFAULT_MAP_LAYERS: MapLayers = {
   centralBanks: true,
   commodityHubs: false,
   gulfInvestments: false,
+  // Happy variant layers
+  positiveEvents: false,
+  kindness: false,
 };
 
 export const VARIANT_CONFIG: VariantConfig = {

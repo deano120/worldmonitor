@@ -523,6 +523,9 @@ export interface MapLayers {
   commodityHubs: boolean;
   // Gulf FDI layers
   gulfInvestments: boolean;
+  // Happy variant layers
+  positiveEvents: boolean;
+  kindness: boolean;
 }
 
 export interface AIDataCenter {
